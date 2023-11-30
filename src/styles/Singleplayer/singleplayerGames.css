@@ -1,0 +1,43 @@
+.singleplayer-page {
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    color: white;
+}
+
+.singleplayer-header {
+    height: 10vh;
+    background-color: orange;
+    width: 100%;
+}
+
+.singleplayer-title {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    margin: 0;
+    margin-left: 5vw;
+    width: 95vw;
+}
+
+.solo-games-list {
+    height: 90vh;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+    grid-auto-rows: 35vh; /* Each row has a height of 30vh */
+    grid-gap: 0; /* No gap between grid items */
+}
+
+.solo-game {
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.solo-game-video {
+    width: 90%;
+    height: 90%;
+}
+

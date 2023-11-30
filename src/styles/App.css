@@ -1,0 +1,18 @@
+html,body {
+    margin: 0;
+}
+
+@font-face {
+    font-family: "Data-Font";
+    src: url("../assets/fonts/data-latin.ttf");
+}
+
+@font-face {
+    font-family: "Inconsolata";
+    src: url("../assets/fonts/Inconsolata.ttf");
+}
+
+* {
+    font-family: "Data-Font";
+    letter-spacing: 3px;
+}
