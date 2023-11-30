@@ -1,10 +1,47 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "../../../styles/Singleplayer/games/speedcode.css";
 import axios from 'axios';
+import { io } from 'socket.io-client';
 
 function Speedcode() {
     const [code, setCode] = useState('');
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        // Connect to the WebSocket server
+        const socketInstance = io('http://localhost:5000'); // Adjust the URL to your Flask server
+
+        // Set up event listeners for handling messages
+        socketInstance.on('connect', () => {
+            console.log('Connected to the server');
+        });
+
+        socketInstance.on('disconnect', () => {
+            console.log('Disconnected from the server');
+        });
+
+        socketInstance.on('match', (data) => {
+            console.log('Matched with player:', data.player_id);
+            // Now you can start the game or perform other actions
+            // based on the fact that the player has been matched
+        });
+
+        // Store the socket instance in the state
+        setSocket(socketInstance);
+
+        // Clean up the socket connection when the component unmounts
+        return () => {
+            socketInstance.disconnect();
+        };
+    }, []);
+
+    const sendMessage = () => {
+        // Example: Send a message to the server
+        if (socket) {
+            socket.emit('message', { text: 'Hello, world!' });
+        }
+    };
 
     useEffect(() => {
         console.log(code)
@@ -118,7 +155,7 @@ function Speedcode() {
                 </div>
                 <div className='speedcode-run-actions'>
                     <button onClick={runCode}>Run Code</button>
-                    <button>Run Tests</button>
+                    <button onClick={sendMessage}>Run Tests</button>
                 </div>
             </div>
         </div>
