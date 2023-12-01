@@ -292,6 +292,7 @@ function AuthenticateUser() {
                         return [...prevLoginRes, newRes]
                     })
                 } else {
+                    alert(response.data)
                     currUsername.current = null;
     
                     setLoginRes(prevLoginRes => {
@@ -391,6 +392,8 @@ function AuthenticateUser() {
                             if (response.data.message !== "Success") {
                                 error = <h1>{"> "}<span style={{color: "red"}}>ERROR:</span>{" Unable to create account"}</h1>
                                 console.log('here errror')
+                            } else {
+                                alert(response.data)
                             }
                         } catch (err) {
                             error = <h1>{"> "}<span style={{color: "red"}}>ERROR:</span>{" Unable to create account"}</h1>

@@ -6,42 +6,43 @@ import { io } from 'socket.io-client';
 function Speedcode() {
     const [code, setCode] = useState('');
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
-    const [socket, setSocket] = useState(null);
+    const [currSocket, setCurrSocket] = useState(null);
+    const [room, setRoom] = useState(null);
+
+    const playerid = 1;
+    const gameid = 1;
 
     useEffect(() => {
-        // Connect to the WebSocket server
-        const socketInstance = io('http://localhost:5000'); // Adjust the URL to your Flask server
-
-        // Set up event listeners for handling messages
-        socketInstance.on('connect', () => {
-            console.log('Connected to the server');
+        // Connect to the Socket.IO server on the /matchmaking namespace
+        const socket = io('http://127.0.0.1:5000');
+    
+        // Listen for the 'connect' event
+        socket.on('connect', () => {
+          console.log('Connected to server');
         });
-
-        socketInstance.on('disconnect', () => {
-            console.log('Disconnected from the server');
+    
+        // Listen for the 'disconnect' event
+        socket.on('disconnect', () => {
+          console.log('Disconnected from server');
         });
-
-        socketInstance.on('match', (data) => {
-            console.log('Matched with player:', data.player_id);
-            // Now you can start the game or perform other actions
-            // based on the fact that the player has been matched
+    
+        // Listen for the 'match_found' event
+        socket.on('match_found', (data) => {
+          console.log('Match found:', data);
         });
+    
+        socket.emit('queue', { player_id: playerid, game_id: gameid });
+        // socket.emit('message', { player_id: playerid, game_id: gameid })
 
-        // Store the socket instance in the state
-        setSocket(socketInstance);
+        // socket.on('custom_response', (data) => console.log(data))
 
+        setCurrSocket(socket)
         // Clean up the socket connection when the component unmounts
         return () => {
-            socketInstance.disconnect();
+            // emit a message to kill the room
+            socket.disconnect();
         };
     }, []);
-
-    const sendMessage = () => {
-        // Example: Send a message to the server
-        if (socket) {
-            socket.emit('message', { text: 'Hello, world!' });
-        }
-    };
 
     useEffect(() => {
         console.log(code)
@@ -116,50 +117,58 @@ function Speedcode() {
         console.log(response.data);
     }
 
-    return (
-        <div className='speedcode-cont'>
-            <div className='speedcode-header'>
-                <div className='speedcode-timer-cont'>
-                    <h1>{formatTime(time)}</h1>
-                </div>
-                <div className='speedcode-opponent-info-cont'>
-                    <h3>Opponent  : User135</h3>
-                    <p>Max Cases Passed: 3/5</p>
-                </div>
-            </div>
-            <div className='speedcode-ide-cont'>
-                <div className='speedcode-ls'>
-                    <div className='speedcode-line-nums' ref={nums}>
-                        {lineNums()}
+    if (room !== null && currSocket !== null) {
+        return (
+            <div className='speedcode-cont'>
+                <div className='speedcode-header'>
+                    <div className='speedcode-timer-cont'>
+                        <h1>{formatTime(time)}</h1>
                     </div>
-                    <div className='speedcode-code-input-cont'>
-                        <textarea value={code} onKeyDown={handleKeyPress} onPaste={e => e.preventDefault()} ref={codeInput} onScroll={scrollNums} onChange={e => setCode(e.target.value)} id='speedcode-code-input' className='speedcode-code-input'>
+                    <div className='speedcode-opponent-info-cont'>
+                        <h3>Opponent  : User135</h3>
+                        <p>Max Cases Passed: 3/5</p>
+                    </div>
+                </div>
+                <div className='speedcode-ide-cont'>
+                    <div className='speedcode-ls'>
+                        <div className='speedcode-line-nums' ref={nums}>
+                            {lineNums()}
+                        </div>
+                        <div className='speedcode-code-input-cont'>
+                            <textarea value={code} onKeyDown={handleKeyPress} onPaste={e => e.preventDefault()} ref={codeInput} onScroll={scrollNums} onChange={e => setCode(e.target.value)} id='speedcode-code-input' className='speedcode-code-input'>
 
-                        </textarea>
+                            </textarea>
+                        </div>
+                    </div>
+                    <div className='speedcode-rs'>
+                        <div className='speedcode-problem-cont'>
+                            <h1 className='speedcode-problem-title'>isAnagram?</h1>
+                            <textarea className='speedcode-problem'></textarea>
+                        </div>
+                        <div className='speedcode-console-cont'>
+                            <textarea className='speedcode-console'></textarea>
+                        </div>
                     </div>
                 </div>
-                <div className='speedcode-rs'>
-                    <div className='speedcode-problem-cont'>
-                        <h1 className='speedcode-problem-title'>isAnagram?</h1>
-                        <textarea className='speedcode-problem'></textarea>
+                <div className='speedcode-footer'>
+                    <div className='speedcode-code-actions'>
+                        <button>Clear Code</button>
+                        <button>Submit</button>
                     </div>
-                    <div className='speedcode-console-cont'>
-                        <textarea className='speedcode-console'></textarea>
+                    <div className='speedcode-run-actions'>
+                        <button onClick={runCode}>Run Code</button>
+                        <button onClick={null}>Run Tests</button>
                     </div>
                 </div>
             </div>
-            <div className='speedcode-footer'>
-                <div className='speedcode-code-actions'>
-                    <button>Clear Code</button>
-                    <button>Submit</button>
-                </div>
-                <div className='speedcode-run-actions'>
-                    <button onClick={runCode}>Run Code</button>
-                    <button onClick={sendMessage}>Run Tests</button>
-                </div>
+        );
+    } else {
+        return (
+            <div className='speedcode-cont'>
+                <h1>Finding Match</h1>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default Speedcode;
