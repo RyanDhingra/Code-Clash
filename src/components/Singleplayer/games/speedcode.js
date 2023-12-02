@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useNavigate } from 'react';
 import "../../../styles/Singleplayer/games/speedcode.css";
 import axios from 'axios';
 import { io } from 'socket.io-client';
@@ -8,27 +8,36 @@ function Speedcode() {
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
     const [currSocket, setCurrSocket] = useState(null);
     const [room, setRoom] = useState(null);
+    const navigate = useNavigate();
 
     const playerid = 1;
     const gameid = 1;
 
     useEffect(() => {
         // Connect to the Socket.IO server on the /matchmaking namespace
-        const socket = io('http://127.0.0.1:5000');
+        const socket = io('http://192.168.2.130:5000');
     
         // Listen for the 'connect' event
         socket.on('connect', () => {
-          console.log('Connected to server');
+            console.log('Connected to server');
         });
     
         // Listen for the 'disconnect' event
-        socket.on('disconnect', () => {
-          console.log('Disconnected from server');
+        socket.on('disconnect', (data) => {
+            socket.disconnect();
+            console.log('Disconnected from server');
+            setRoom(null);
+            setCurrSocket(null);
+
+            if (data.reason === 'player quit') {
+                navigate('/singleplayer');
+            }
         });
     
         // Listen for the 'match_found' event
         socket.on('match_found', (data) => {
-          console.log('Match found:', data);
+            console.log('Match found:', data);
+            setRoom(data.roomId);
         });
     
         socket.emit('queue', { player_id: playerid, game_id: gameid });
@@ -39,8 +48,10 @@ function Speedcode() {
         setCurrSocket(socket)
         // Clean up the socket connection when the component unmounts
         return () => {
-            // emit a message to kill the room
+            socket.emit('delete_room', { room_id: room, game_id: gameid, reason: 'player quit' });
             socket.disconnect();
+            setRoom(null);
+            setCurrSocket(null);
         };
     }, []);
 
