@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState, useNavigate } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import "../../../styles/Singleplayer/games/speedcode.css";
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { useNavigate } from 'react-router';
 
 function Speedcode() {
     const [code, setCode] = useState('');
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
     const [currSocket, setCurrSocket] = useState(null);
-    const [room, setRoom] = useState(null);
+    const room = useRef(null);
     const navigate = useNavigate();
 
     const playerid = 1;
@@ -26,8 +27,6 @@ function Speedcode() {
         socket.on('disconnect', (data) => {
             socket.disconnect();
             console.log('Disconnected from server');
-            setRoom(null);
-            setCurrSocket(null);
 
             if (data.reason === 'player quit') {
                 navigate('/singleplayer');
@@ -37,7 +36,7 @@ function Speedcode() {
         // Listen for the 'match_found' event
         socket.on('match_found', (data) => {
             console.log('Match found:', data);
-            setRoom(data.roomId);
+            room.current = data.room_id;
         });
     
         socket.emit('queue', { player_id: playerid, game_id: gameid });
@@ -48,10 +47,10 @@ function Speedcode() {
         setCurrSocket(socket)
         // Clean up the socket connection when the component unmounts
         return () => {
-            socket.emit('delete_room', { room_id: room, game_id: gameid, reason: 'player quit' });
+            console.log('WE DELETE ROOM HERE')
+            console.log(room.current)
+            socket.emit('delete_room', { room_id: room.current, game_id: gameid, reason: 'player quit' });
             socket.disconnect();
-            setRoom(null);
-            setCurrSocket(null);
         };
     }, []);
 
@@ -128,7 +127,7 @@ function Speedcode() {
         console.log(response.data);
     }
 
-    if (room !== null && currSocket !== null) {
+    if (room.current !== null && currSocket !== null) {
         return (
             <div className='speedcode-cont'>
                 <div className='speedcode-header'>
