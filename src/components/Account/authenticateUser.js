@@ -266,7 +266,7 @@ function AuthenticateUser() {
             const pass = e.target.value;
 
             try {
-                const response = await axios.post("http://127.0.0.1:5000/auth", {
+                const response = await axios.post("http://192.168.2.130:5000/auth", {
                     "user_info": {
                         "action": "login",
                         "username": username.toLowerCase(),
@@ -376,7 +376,7 @@ function AuthenticateUser() {
                             return [...prevSignupRes, authRes]
                         })
                         try {
-                            const response = await axios.post("http://127.0.0.1:5000/auth", {
+                            const response = await axios.post("http://192.168.2.130:5000/auth", {
                                 "user_info": {
                                     "action": "signup",
                                     "username": username.toLowerCase(),
