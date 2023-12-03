@@ -43,7 +43,7 @@ function Speedcode() {
         // Listen for the 'match_found' event
         socket.on('match_found', (data) => {
             console.log('Match found:', data);
-            room.current = data.roomId;
+            room.current = data.room_id;
             matchFound.current = true;
         });
     
