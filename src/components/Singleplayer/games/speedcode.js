@@ -24,9 +24,9 @@ function Speedcode() {
         });
     
         // Listen for the 'disconnect' event
-        socket.on('disconnect', (data) => {
+        socket.on('leave_match', (data) => {
             socket.disconnect();
-            console.log('Disconnected from server');
+            console.log('Disconnected from server', {data});
 
             if (data.reason === 'player quit') {
                 navigate('/singleplayer');
@@ -36,7 +36,7 @@ function Speedcode() {
         // Listen for the 'match_found' event
         socket.on('match_found', (data) => {
             console.log('Match found:', data);
-            room.current = data.room_id;
+            room.current = data.roomId;
         });
     
         socket.emit('queue', { player_id: playerid, game_id: gameid });
