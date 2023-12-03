@@ -7,7 +7,6 @@
 
 .singleplayer-header {
     height: 10vh;
-    background-color: orange;
     width: 100%;
 }
 
@@ -24,13 +23,15 @@
     height: 90vh;
     overflow-y: scroll;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
-    grid-auto-rows: 35vh; /* Each row has a height of 30vh */
-    grid-gap: 0; /* No gap between grid items */
+    grid-template-columns: repeat(3, 1fr);
+    /* Three columns with equal width */
+    grid-auto-rows: 35vh;
+    /* Each row has a height of 30vh */
+    grid-gap: 0;
+    /* No gap between grid items */
 }
 
 .solo-game {
-    background-color: aqua;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,3 +42,6 @@
     height: 90%;
 }
 
+.solo-game-video.selected {
+    border: 3px solid white;
+}

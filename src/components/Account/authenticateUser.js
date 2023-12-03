@@ -150,6 +150,10 @@ function AuthenticateUser() {
 
     const [authRes, setAuthRes] = useState([]);
 
+    useEffect(() => {
+        nextInput()
+    }, [authRes])
+
     const handleAuthInput = (e) => {
         setAuthRes(prevAuthRes => {
                 const currOpt = e.target.value
@@ -335,6 +339,7 @@ function AuthenticateUser() {
 
     useEffect(() => {
         nextInput()
+        console.log('here')
     }, [loginRes])
 
     const [signupRes, setSignupRes] = useState([]);

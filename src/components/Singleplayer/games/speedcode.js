@@ -9,6 +9,7 @@ function Speedcode() {
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
     const [currSocket, setCurrSocket] = useState(null);
     const room = useRef(null);
+    const matchFound = useRef(false);
     const navigate = useNavigate();
 
     const playerid = 1;
@@ -32,11 +33,18 @@ function Speedcode() {
                 navigate('/singleplayer');
             }
         });
+
+        socket.on('room_created', (data) => {
+            console.log('Room created:', data)
+            room.current = data.room_id;
+        });
+    
     
         // Listen for the 'match_found' event
         socket.on('match_found', (data) => {
             console.log('Match found:', data);
             room.current = data.roomId;
+            matchFound.current = true;
         });
     
         socket.emit('queue', { player_id: playerid, game_id: gameid });
@@ -54,9 +62,9 @@ function Speedcode() {
         };
     }, []);
 
-    useEffect(() => {
-        console.log(code)
-    }, [code])
+    // useEffect(() => {
+    //     console.log(code)
+    // }, [code])
 
     const lineNums = () => {
         const lines = code.split('\n');
@@ -99,11 +107,13 @@ function Speedcode() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTime((prevTime) => prevTime + 1);
+            if (matchFound.current && currSocket !== null) {
+                setTime((prevTime) => prevTime + 1);
+            }
         }, 1000);
-
+        
         return () => clearInterval(interval);
-    }, []);
+    }, [matchFound.current, currSocket]);
 
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
@@ -127,7 +137,7 @@ function Speedcode() {
         console.log(response.data);
     }
 
-    if (room.current !== null && currSocket !== null) {
+    if (matchFound.current && currSocket !== null) {
         return (
             <div className='speedcode-cont'>
                 <div className='speedcode-header'>
