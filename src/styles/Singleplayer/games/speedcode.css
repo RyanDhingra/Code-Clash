@@ -141,6 +141,8 @@
     background-color: black;
     border-top: 3px solid white;
     color: white;
+    white-space: pre-wrap;
+    user-select: none;
 }
 
 .speedcode-console-cont {
@@ -159,6 +161,26 @@
     font-family: "Inconsolata";
     background-color: black;
     color: white;
+}
+
+.speedcode-console::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+}
+
+.speedcode-console::-webkit-scrollbar-thumb {
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background-clip: content-box;
+}
+
+.speedcode-console::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.speedcode-console::-webkit-scrollbar-track-piece:end {
+    margin-bottom: 1.5vh;
 }
 
 .speedcode-footer {

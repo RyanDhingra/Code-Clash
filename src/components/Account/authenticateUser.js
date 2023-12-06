@@ -159,7 +159,7 @@ function AuthenticateUser() {
                 const currOpt = e.target.value
                 e.target.disabled = true;
 
-                if (currOpt === '1' || currOpt === '2') {
+                if (currOpt === '1') { //|| currOpt === '2' (uncomment and place in conditional statement for production)
                     setStage(Number(currOpt))
                     
                     let newRes = null
