@@ -222,12 +222,18 @@ function Speedcode() {
                 }
 
                 let result = ""
+                let gameOver = false;
 
                 if (cases_passed === 10) {
                     result += cases_passed + "/10"
                     result += "\nAll cases passed, well done!"
+                    gameOver = true;
                 }
                 setConsoleText((prevConsoleText) => prevConsoleText + "Cases Passed:\n" + result + "\n\n")
+
+                if (gameOver) {
+                    currSocket.emit('game_over', { room_id: room.current, game_id: gameid, player_id: playerid, result: result, time: time })
+                }
             }
         } 
     }
