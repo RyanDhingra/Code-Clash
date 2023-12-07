@@ -3,88 +3,13 @@ import "../../styles/Account/authenticateUser.css"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function AuthenticateUser() {
+function AuthenticateUser({ setUser }) {
     const terminal = useRef(null)
     const navigate = useNavigate();
     const [stage, setStage] = useState(0);
     const [initText, setInitText] = useState("> Initializing");
     const [initTextCounter, setInitTextCounter] = useState(0);
     const [loading, setLoading] = useState(false);
-
-    // login methods
-    // const handleSignUp = async (event) => {
-    //     event.preventDefault();
-    //     const name = event.target.name.value
-    //     const email = event.target.email.value
-    //     const pass1 = event.target.password.value
-    //     const pass2 = event.target.confirm.value
-
-    //     if (pass1 === pass2) {
-    //         try {
-    //             setLoading(true)
-    //             const response = await axios.post("https://ar-rackets-api.onrender.com/customer", {
-    //                 "customer_info": {
-    //                     "action": "signup",
-    //                     "name": name,
-    //                     "email": email,
-    //                     "password": pass1
-    //                 }
-    //             }, {
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 }
-    //             });
-
-    //             if (response.data.message === "Success.") {
-    //                 navigate('/login')
-    //                 setLoading(false)
-    //                 alert("Account created successfully! Proceed to login.")
-    //             }
-    //         } catch (error) {
-    //             setLoading(false)
-    //             alert('Error: ', error);
-    //         }
-
-    //         event.target.reset()
-    //     } else {
-    //         alert("Passwords must be matching. Please try again.")
-    //     }
-    // }
-
-    // const handleLogin = async (event) => {
-    //     event.preventDefault();
-    //     const email = event.target.email.value
-    //     const pass = event.target.password.value
-
-    //     try {
-    //         setLoading(true)
-    //         const response = await axios.post("https://ar-rackets-api.onrender.com/customer", {
-    //             "customer_info": {
-    //                 "action": "login",
-    //                 "email": email,
-    //                 "password": pass
-    //             }
-    //         }, {
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         });
-
-    //         if (response.data.status) {
-    //             setLoading(false)
-    //             setAuth(response.data.status);
-    //             localStorage.setItem('user', JSON.stringify(response.data.status))
-    //             navigate('/');
-    //         } else {
-    //             setLoading(false)
-    //             alert("Login failed. Please try again.")
-    //         }
-    //     } catch (error) {
-    //         alert('Error: ', error);
-    //     }
-
-    //     event.target.reset()
-    // }
 
     useEffect(() => {
         nextInput()
@@ -295,6 +220,7 @@ function AuthenticateUser() {
             
                         return [...prevLoginRes, newRes]
                     })
+                    setUser(response.data.username)
                 } else {
                     alert(response.data)
                     currUsername.current = null;

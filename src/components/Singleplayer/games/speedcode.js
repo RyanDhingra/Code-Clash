@@ -4,7 +4,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router';
 
-function Speedcode() {
+function Speedcode({ user }) {
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
 
     const room = useRef(null);
@@ -20,6 +20,9 @@ function Speedcode() {
     const [format, setFormat] = useState(false);
     const [consoleText, setConsoleText] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [maxCases, setMaxCases] = useState(0);
+    const [opponent, setOpponent] = useState('');
+    const [currCases, setCurrCases] = useState(0);
 
     const playerid = 1;
     const gameid = 1;
@@ -57,7 +60,15 @@ function Speedcode() {
         // Connect to the Socket.IO server
         const socket = io('http://192.168.2.130:5000');
         setCurrSocket(socket)
-    
+
+        socket.on('game_over', () => {
+            alert('You lost, better luck next time!')
+            navigate('/singleplayer');
+        })
+
+        socket.on('update_cases', (data) => {
+            setMaxCases(data.cases);
+        })
         // Listen for the 'connect' event
         socket.on('connect', () => {
             console.log('Connected to server');
@@ -84,12 +95,10 @@ function Speedcode() {
             room.current = data.room_id;
             matchFound.current = true;
             setProblem(data.problem);
+            setOpponent(data.opponent);
         });
     
-        socket.emit('queue', { player_id: playerid, game_id: gameid });
-        // socket.emit('message', { player_id: playerid, game_id: gameid })
-
-        // socket.on('custom_response', (data) => console.log(data))
+        socket.emit('queue', { player_id: playerid, game_id: gameid, user: user });
 
         const handleBeforeUnload = () => {
             socket.emit('delete_room', { room_id: room.current, game_id: gameid, reason: 'player quit' });
@@ -119,7 +128,7 @@ function Speedcode() {
         const lines = code.split('\n');
         lines.push('extra line number')
         return lines.map((line, index) => (
-            <p className='speedcode-line-num'>{index + 1}</p>
+            <p key={index} className='speedcode-line-num'>{index + 1}</p>
         ));
     };
 
@@ -228,11 +237,17 @@ function Speedcode() {
                     result += cases_passed + "/10"
                     result += "\nAll cases passed, well done!"
                     gameOver = true;
+                } else {
+                    result += cases_passed + "/10"
                 }
                 setConsoleText((prevConsoleText) => prevConsoleText + "Cases Passed:\n" + result + "\n\n")
 
                 if (gameOver) {
-                    currSocket.emit('game_over', { room_id: room.current, game_id: gameid, player_id: playerid, result: result, time: time })
+                    currSocket.emit('game_over', { room_id: room.current, game_id: gameid })
+                    alert('You won!')
+                    navigate('/singleplayer');
+                } else {
+                    currSocket.emit('update_cases', { room_id: room.current, cases: cases_passed, game_id: gameid })
                 }
             }
         } 
@@ -250,8 +265,8 @@ function Speedcode() {
                         <h1>{formatTime(time)}</h1>
                     </div>
                     <div className='speedcode-opponent-info-cont'>
-                        <h3>Opponent: User135</h3>
-                        <p>Max Cases Passed: 3/5</p>
+                        <h3>Opponent: {opponent}</h3>
+                        <p>Max Cases Passed: {maxCases}/10</p>
                     </div>
                 </div>
                 <div className='speedcode-ide-cont'>
