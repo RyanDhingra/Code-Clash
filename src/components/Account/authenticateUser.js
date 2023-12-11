@@ -220,7 +220,7 @@ function AuthenticateUser({ setUser }) {
             
                         return [...prevLoginRes, newRes]
                     })
-                    setUser(response.data.username)
+                    setUser(response.data.user)
                 } else {
                     alert(response.data)
                     currUsername.current = null;

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import "../../../styles/Singleplayer/games/speedcode.css";
+import "../../../styles/Singleplayer/games/bugblitz.css";
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router';
 import MatchmakingLoader from '../../Loaders/Matchmaking/matchmaking';
 
-function Speedcode({ user }) {
-    const gameid = 1;
+function BugBlitz({ user }) {
+    const gameid = 2;
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
 
     const room = useRef(null);
@@ -30,12 +30,10 @@ function Speedcode({ user }) {
             codeConsole.current.scrollTop = codeConsole.current.scrollHeight;
         }
     }, [consoleText])
-    console.log("User")
-    console.log(user)
+
     useEffect(() => {
         if (problem.length !== 0) {
-            const funcName = "def " + problem[5] + ":";
-            setCode(funcName)
+            setCode(problem[8])
 
             const desc = "Problem Description:\n\n" + problem[2] + "\n\n\n" + "Constraints:\n\n"
             let constraints = ""
@@ -99,6 +97,7 @@ function Speedcode({ user }) {
             matchFound.current = true;
             setProblem(data.problem);
             setOpponent(data.opponent);
+            console.log(data.problem[8])
         });
     
         socket.emit('queue', { player_id: user.id, game_id: gameid, user: user.username });
@@ -131,7 +130,7 @@ function Speedcode({ user }) {
         const lines = code.split('\n');
         lines.push('extra line number')
         return lines.map((line, index) => (
-            <p key={index} className='speedcode-line-num'>{index + 1}</p>
+            <p key={index} className='bugblitz-line-num'>{index + 1}</p>
         ));
     };
 
@@ -182,11 +181,9 @@ function Speedcode({ user }) {
     /* Code Actions */
 
     const runCode = async (action) => {
-        const userCode = document.getElementById('speedcode-code-input').value;
+        const userCode = document.getElementById('bugblitz-code-input').value;
 
         let reqData = null;
-        console.log(problem[6])
-        console.log(userCode)
 
         if (action === 'run_code') {
             reqData = {
@@ -263,48 +260,48 @@ function Speedcode({ user }) {
     }
 
     if (submitted) {
-        <div className='speedcode-cont'>
+        <div className='bugblitz-cont'>
             <h1>Waiting for opponent...</h1>
         </div>
     } else if (matchFound.current && currSocket !== null && problem.length !== 0) {
         return (
-            <div className='speedcode-cont'>
-                <div className='speedcode-header'>
-                    <div className='speedcode-timer-cont'>
+            <div className='bugblitz-cont'>
+                <div className='bugblitz-header'>
+                    <div className='bugblitz-timer-cont'>
                         <h1>{formatTime(time)}</h1>
                     </div>
-                    <div className='speedcode-opponent-info-cont'>
+                    <div className='bugblitz-opponent-info-cont'>
                         <h3>Opponent: {opponent}</h3>
                         <p>Max Cases Passed: {maxCases}/10</p>
                     </div>
                 </div>
-                <div className='speedcode-ide-cont'>
-                    <div className='speedcode-ls'>
-                        <div className='speedcode-line-nums' ref={nums}>
+                <div className='bugblitz-ide-cont'>
+                    <div className='bugblitz-ls'>
+                        <div className='bugblitz-line-nums' ref={nums}>
                             {lineNums()}
                         </div>
-                        <div className='speedcode-code-input-cont'>
-                            <textarea value={code} onKeyDown={handleKeyPress} onPaste={/*e => e.preventDefault()*/null} ref={codeInput} onScroll={scrollNums} onChange={e => setCode(e.target.value)} id='speedcode-code-input' className='speedcode-code-input'>
+                        <div className='bugblitz-code-input-cont'>
+                            <textarea value={code} onKeyDown={handleKeyPress} onPaste={/*e => e.preventDefault()*/null} ref={codeInput} onScroll={scrollNums} onChange={e => setCode(e.target.value)} id='bugblitz-code-input' className='bugblitz-code-input'>
                             
                             </textarea>
                         </div>
                     </div>
-                    <div className='speedcode-rs'>
-                        <div className='speedcode-problem-cont'>
-                            <h1 className='speedcode-problem-title'>{problem[1]}</h1>
-                            <textarea readOnly value={problemText} className='speedcode-problem'></textarea>
+                    <div className='bugblitz-rs'>
+                        <div className='bugblitz-problem-cont'>
+                            <h1 className='bugblitz-problem-title'>{problem[1]}</h1>
+                            <textarea readOnly value={problemText} className='bugblitz-problem'></textarea>
                         </div>
-                        <div className='speedcode-console-cont'>
-                            <textarea ref={codeConsole} value={consoleText} readOnly className='speedcode-console'></textarea>
+                        <div className='bugblitz-console-cont'>
+                            <textarea ref={codeConsole} value={consoleText} readOnly className='bugblitz-console'></textarea>
                         </div>
                     </div>
                 </div>
-                <div className='speedcode-footer'>
-                    <div className='speedcode-code-actions'>
-                        <button onClick={() => setCode("def " + problem[5] + ":")}>Reset Code</button>
+                <div className='bugblitz-footer'>
+                    <div className='bugblitz-code-actions'>
+                        <button onClick={() => setCode(problem[8])}>Reset Code</button>
                         <button>Submit</button>
                     </div>
-                    <div className='speedcode-run-actions'>
+                    <div className='bugblitz-run-actions'>
                         <button onClick={() => runCode("run_code")}>Run Code</button>
                         <button onClick={() => runCode("run_tests")}>Run Tests</button>
                     </div>
@@ -318,4 +315,4 @@ function Speedcode({ user }) {
     }
 }
 
-export default Speedcode;
+export default BugBlitz;

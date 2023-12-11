@@ -3,8 +3,9 @@ import selectArrow from '../../assets/images/selectArrow.png';
 import "../../styles/MainMenu/mainMenu.css";
 import { useNavigate } from 'react-router-dom';
 
-function MainMenu() {
+function MainMenu({ user }) {
     const [arrowActive, setArrowActive] = useState(1);
+    const [menuActive, setMenuActive] = useState(false);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -52,47 +53,57 @@ function MainMenu() {
         };
     }, [arrowActive]); 
 
-    return (
-        <div className='main-menu'>
-            <div className='main-menu-cont'>
-                <div className='title-cont'>
-                    <h1 className='title'>Main Menu</h1>
-                </div>
-                <div className='main-menu-opts'>
-                    <div className='arrows-cont'>
-                        <div className='arrow-cont'>
-                            <img className='arrow' src={selectArrow} alt='Select Arrow' style={{visibility: arrowActive === 1 ? "visible":"hidden"}}/>
+    useEffect(() => {
+        if (user.id) {
+            setMenuActive(true)
+        } else {
+            navigate('/')
+        }
+    }, [])
+
+    if (menuActive) {
+        return (
+            <div className='main-menu'>
+                <div className='main-menu-cont'>
+                    <div className='title-cont'>
+                        <h1 className='title'>Main Menu</h1>
+                    </div>
+                    <div className='main-menu-opts'>
+                        <div className='arrows-cont'>
+                            <div className='arrow-cont'>
+                                <img className='arrow' src={selectArrow} alt='Select Arrow' style={{visibility: arrowActive === 1 ? "visible":"hidden"}}/>
+                            </div>
+                            <div className='arrow-cont'>
+                                <img className='arrow' src={selectArrow} alt='Select Arrow' style={{visibility: arrowActive === 2 ? "visible":"hidden"}}/>
+                            </div>
+                            <div className='arrow-cont'>
+                                <img className='arrow' src={selectArrow} alt='Select Arrow' style={{visibility: arrowActive === 3 ? "visible":"hidden"}}/>
+                            </div>
                         </div>
-                        <div className='arrow-cont'>
-                            <img className='arrow' src={selectArrow} alt='Select Arrow' style={{visibility: arrowActive === 2 ? "visible":"hidden"}}/>
-                        </div>
-                        <div className='arrow-cont'>
-                            <img className='arrow' src={selectArrow} alt='Select Arrow' style={{visibility: arrowActive === 3 ? "visible":"hidden"}}/>
+                        <div className='opts-cont'>
+                            <div className='opt'>
+                                <h1 style={{color: arrowActive === 1 ? "#009E00":"white"}}>Singleplayer</h1>
+                            </div>
+                            <div className='opt'>
+                                <h1 style={{color: arrowActive === 2 ? "#009E00":"white"}}>Multiplayer</h1>
+                            </div>
+                            <div className='opt'>
+                                <h1 style={{color: arrowActive === 3 ? "#009E00":"white"}}>Profile</h1>
+                            </div>
                         </div>
                     </div>
-                    <div className='opts-cont'>
-                        <div className='opt'>
-                            <h1 style={{color: arrowActive === 1 ? "#009E00":"white"}}>Singleplayer</h1>
+                    <div className='menu-buttons'>
+                        <div className='settings'>
+                            <button className='settings-btn'>Settings</button>
                         </div>
-                        <div className='opt'>
-                            <h1 style={{color: arrowActive === 2 ? "#009E00":"white"}}>Multiplayer</h1>
+                        <div className='logout'>
+                            <button className='logout-btn'>Logout</button>
                         </div>
-                        <div className='opt'>
-                            <h1 style={{color: arrowActive === 3 ? "#009E00":"white"}}>Profile</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className='menu-buttons'>
-                    <div className='settings'>
-                        <button className='settings-btn'>Settings</button>
-                    </div>
-                    <div className='logout'>
-                        <button className='logout-btn'>Logout</button>
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default MainMenu;

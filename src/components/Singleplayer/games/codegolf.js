@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import "../../../styles/Singleplayer/games/speedcode.css";
+import "../../../styles/Singleplayer/games/codegolf.css";
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router';
 import MatchmakingLoader from '../../Loaders/Matchmaking/matchmaking';
 
-function Speedcode({ user }) {
-    const gameid = 1;
+function Codegolf({ user }) {
+    const gameid = 3;
     const bracketPairs = { '(': ')', '{': '}', '[': ']' };
 
     const room = useRef(null);
@@ -24,14 +24,18 @@ function Speedcode({ user }) {
     const [maxCases, setMaxCases] = useState(0);
     const [opponent, setOpponent] = useState('');
     const [loading, setLoading] = useState(true);
+    const [charCount, setCharCount] = useState(0);
+
+    useEffect(() => {
+        setCharCount(code.replace(/\s/g, '').length)
+    }, [code])
 
     useEffect(() => {
         if (codeConsole.current) {
             codeConsole.current.scrollTop = codeConsole.current.scrollHeight;
         }
     }, [consoleText])
-    console.log("User")
-    console.log(user)
+
     useEffect(() => {
         if (problem.length !== 0) {
             const funcName = "def " + problem[5] + ":";
@@ -131,7 +135,7 @@ function Speedcode({ user }) {
         const lines = code.split('\n');
         lines.push('extra line number')
         return lines.map((line, index) => (
-            <p key={index} className='speedcode-line-num'>{index + 1}</p>
+            <p key={index} className='codegolf-line-num'>{index + 1}</p>
         ));
     };
 
@@ -161,28 +165,10 @@ function Speedcode({ user }) {
         nums.current.scrollTop = codeInputScroll;
     }
 
-    const [time, setTime] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (matchFound.current && currSocket !== null) {
-                setTime((prevTime) => prevTime + 1);
-            }
-        }, 1000);
-        
-        return () => clearInterval(interval);
-    }, [matchFound.current, currSocket]);
-
-    const formatTime = (time) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    };
-
     /* Code Actions */
 
     const runCode = async (action) => {
-        const userCode = document.getElementById('speedcode-code-input').value;
+        const userCode = document.getElementById('codegolf-code-input').value;
 
         let reqData = null;
         console.log(problem[6])
@@ -263,48 +249,48 @@ function Speedcode({ user }) {
     }
 
     if (submitted) {
-        <div className='speedcode-cont'>
+        <div className='codegolf-cont'>
             <h1>Waiting for opponent...</h1>
         </div>
     } else if (matchFound.current && currSocket !== null && problem.length !== 0) {
         return (
-            <div className='speedcode-cont'>
-                <div className='speedcode-header'>
-                    <div className='speedcode-timer-cont'>
-                        <h1>{formatTime(time)}</h1>
+            <div className='codegolf-cont'>
+                <div className='codegolf-header'>
+                    <div className='codegolf-timer-cont'>
+                        <h1>Character Count: {charCount}</h1>
                     </div>
-                    <div className='speedcode-opponent-info-cont'>
+                    <div className='codegolf-opponent-info-cont'>
                         <h3>Opponent: {opponent}</h3>
                         <p>Max Cases Passed: {maxCases}/10</p>
                     </div>
                 </div>
-                <div className='speedcode-ide-cont'>
-                    <div className='speedcode-ls'>
-                        <div className='speedcode-line-nums' ref={nums}>
+                <div className='codegolf-ide-cont'>
+                    <div className='codegolf-ls'>
+                        <div className='codegolf-line-nums' ref={nums}>
                             {lineNums()}
                         </div>
-                        <div className='speedcode-code-input-cont'>
-                            <textarea value={code} onKeyDown={handleKeyPress} onPaste={/*e => e.preventDefault()*/null} ref={codeInput} onScroll={scrollNums} onChange={e => setCode(e.target.value)} id='speedcode-code-input' className='speedcode-code-input'>
+                        <div className='codegolf-code-input-cont'>
+                            <textarea value={code} onKeyDown={handleKeyPress} onPaste={/*e => e.preventDefault()*/null} ref={codeInput} onScroll={scrollNums} onChange={e => setCode(e.target.value)} id='codegolf-code-input' className='codegolf-code-input'>
                             
                             </textarea>
                         </div>
                     </div>
-                    <div className='speedcode-rs'>
-                        <div className='speedcode-problem-cont'>
-                            <h1 className='speedcode-problem-title'>{problem[1]}</h1>
-                            <textarea readOnly value={problemText} className='speedcode-problem'></textarea>
+                    <div className='codegolf-rs'>
+                        <div className='codegolf-problem-cont'>
+                            <h1 className='codegolf-problem-title'>{problem[1]}</h1>
+                            <textarea readOnly value={problemText} className='codegolf-problem'></textarea>
                         </div>
-                        <div className='speedcode-console-cont'>
-                            <textarea ref={codeConsole} value={consoleText} readOnly className='speedcode-console'></textarea>
+                        <div className='codegolf-console-cont'>
+                            <textarea ref={codeConsole} value={consoleText} readOnly className='codegolf-console'></textarea>
                         </div>
                     </div>
                 </div>
-                <div className='speedcode-footer'>
-                    <div className='speedcode-code-actions'>
+                <div className='codegolf-footer'>
+                    <div className='codegolf-code-actions'>
                         <button onClick={() => setCode("def " + problem[5] + ":")}>Reset Code</button>
                         <button>Submit</button>
                     </div>
-                    <div className='speedcode-run-actions'>
+                    <div className='codegolf-run-actions'>
                         <button onClick={() => runCode("run_code")}>Run Code</button>
                         <button onClick={() => runCode("run_tests")}>Run Tests</button>
                     </div>
@@ -318,4 +304,4 @@ function Speedcode({ user }) {
     }
 }
 
-export default Speedcode;
+export default Codegolf;

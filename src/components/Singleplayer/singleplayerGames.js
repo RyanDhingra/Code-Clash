@@ -3,23 +3,47 @@ import { useNavigate } from 'react-router';
 import "../../styles/Singleplayer/singleplayerGames.css";
 import sp_g1 from "../../assets/videos/SP-G1.mp4";
 
-function SinglePlayerGames() {
-    const games = ["speedcode","Game 2","Game 3","Game 4","Game 5","Game 6","Game 7"];
+function SinglePlayerGames({ user }) {
+    const games = ["speedcode","bugblitz","codegolf","Game 4","Game 5","Game 6","Game 7"];
     const refs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
     const navigate = useNavigate();
-    const [selectedGame, setSelectedGame] = useState(0);
+    const [selectedGame, setSelectedGame] = useState(null);
+    const [singleplayerActive, setSingleplayerActive] = useState(false);
 
     const handleMouseEnter = (refNum) => {
+        setSelectedGame(refNum)
+
+        for (let ref of refs) {
+            ref.current.pause();
+            ref.current.currentTime = 0;
+        }
+
         refs[refNum].current.play();
     };
     
-    const handleMouseLeave = (refNum) => {
-        refs[refNum].current.pause();
-        refs[refNum].current.currentTime = 0;
+    const handleMouseLeave = () => {
+        setSelectedGame(null);
+        for (let ref of refs) {
+            ref.current.pause();
+            ref.current.currentTime = 0;
+        }
     };
 
     useEffect(() => {
+        if (selectedGame !== null) {
+            refs[selectedGame].current.play();
+        }
+    }, [selectedGame]);
+
+    useEffect(() => {
         const handleKeyDown = (e) => {
+            e.preventDefault();
+
+            for (let ref of refs) {
+                ref.current.pause();
+                ref.current.currentTime = 0;
+            }
+
             setSelectedGame((prevSelectedGame) => {
                 if (e.key === 'ArrowRight' && prevSelectedGame + 1 < games.length) {
                     return prevSelectedGame + 1;
@@ -29,7 +53,7 @@ function SinglePlayerGames() {
                     return prevSelectedGame - 3;
                 } else if (e.key === 'ArrowDown' && prevSelectedGame + 3 < games.length) {
                     return prevSelectedGame + 3;
-                } else if (e.key === 'Enter') {
+                } else if (e.key === 'Enter' && prevSelectedGame !== null) {
                     navigate('/singleplayer/' + games[prevSelectedGame]);
                 }
     
@@ -39,29 +63,38 @@ function SinglePlayerGames() {
         };
     
         window.addEventListener('keydown', handleKeyDown);
-    
+
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
-    
 
-    return (
-        <div className='singleplayer-page'>
-            <div className='singleplayer-header'>
-                <h1 className='singleplayer-title'>Mode Select:</h1>
+    useEffect(() => {
+        if (user.id) {
+            setSingleplayerActive(true)
+        } else {
+            navigate('/')
+        }
+    }, [])
+
+    if (singleplayerActive) {
+        return (
+            <div className={'singleplayer-page'}>
+                <div className='singleplayer-header'>
+                    <h1 className='singleplayer-title'>Mode Select:</h1>
+                </div>
+                <div className='solo-games-list'>
+                    {games.map((game, index) => (
+                        <div onClick={() => navigate('/singleplayer/' + games[index])} key={index} className='solo-game'>
+                            <video ref={refs[index]} className={selectedGame === index ? 'solo-game-video selected':'solo-game-video'} loop onMouseMove={null} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={() => handleMouseLeave()}>
+                                <source src={sp_g1} type='video/mp4'/>
+                            </video>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <div className='solo-games-list'>
-                {games.map((game, index) => (
-                    <div onClick={() => navigate('/singleplayer/' + games[index])} key={index} className='solo-game' onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={() => handleMouseLeave(index)}>
-                        <video ref={refs[index]} className={selectedGame === index ? 'solo-game-video selected':'solo-game-video'} loop onMouseEnter={() => setSelectedGame(index)} onMouseLeave={() => setSelectedGame(null)}>
-                            <source src={sp_g1} type='video/mp4'/>
-                        </video>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default SinglePlayerGames;

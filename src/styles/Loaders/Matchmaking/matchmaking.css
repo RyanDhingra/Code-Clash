@@ -1,0 +1,31 @@
+.matchmaking-page {
+    width: 100%;
+    background-color: black;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.matchmaking-loader-cont {
+    width: 40vw;
+    height: 10vh;
+}
+
+.matchmaking-txt-cont {
+    height: 5vh;
+    color: white;
+}
+
+.matchmaking-loader {
+    height: 4vh;
+    width: 100%;
+    box-sizing: border-box;
+    border: 3px solid white;
+    margin-top: 1vh;
+}
+
+.matchmaking-loader-filler {
+    height: 100%;
+    background-color: green;
+}
