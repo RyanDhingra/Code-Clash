@@ -61,7 +61,7 @@ function Speedcode({ user }) {
 
     useEffect(() => {
         // Connect to the Socket.IO server
-        const socket = io('http://192.168.2.130:5000');
+        const socket = io('https://code-clash-api.onrender.com/');
         setCurrSocket(socket)
 
         socket.on('game_over', () => {
@@ -207,7 +207,7 @@ function Speedcode({ user }) {
 
         console.log(problem[6])
 
-        const response = await axios.post("http://127.0.0.1:5000/code", {
+        const response = await axios.post("https://code-clash-api.onrender.com/code", {
             "code_info": JSON.stringify(reqData)
         }, {
             headers: {

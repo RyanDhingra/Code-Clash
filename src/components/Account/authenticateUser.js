@@ -195,7 +195,7 @@ function AuthenticateUser({ setUser }) {
             const pass = e.target.value;
 
             try {
-                const response = await axios.post("http://192.168.2.130:5000/auth", {
+                const response = await axios.post("https://code-clash-api.onrender.com/auth", {
                     "user_info": {
                         "action": "login",
                         "username": username.toLowerCase(),
@@ -307,7 +307,7 @@ function AuthenticateUser({ setUser }) {
                             return [...prevSignupRes, authRes]
                         })
                         try {
-                            const response = await axios.post("http://192.168.2.130:5000/auth", {
+                            const response = await axios.post("https://code-clash-api.onrender.com/auth", {
                                 "user_info": {
                                     "action": "signup",
                                     "username": username.toLowerCase(),
