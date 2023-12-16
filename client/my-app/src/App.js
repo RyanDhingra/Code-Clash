@@ -26,7 +26,7 @@ function App() {
     socket.on("receive_message", (data) => {
       if(data.message){
         setMessageReceived(data.message);
-        socket.emit("send_message", { message:"", room: data.room });
+        //socket.emit("send_message", { message:"", room: data.room });
       }else{
         console.log("message recived");
       }

@@ -1,10 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.py",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "python index.py"
   },
   "dependencies": {
     "cors": "^2.8.5",
