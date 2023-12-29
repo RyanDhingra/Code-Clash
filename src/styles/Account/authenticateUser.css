@@ -164,12 +164,25 @@ button {
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 5px 30px;
-  }
-  
-  button:active {
-    box-shadow: inset -1px -1px #fff, inset 1px 1px #292929, inset -2px -2px #ffffff, inset 2px 2px rgb(158, 158, 158);
-  }
+}
 
-  * {
+button:active {
+    box-shadow: inset -1px -1px #fff, inset 1px 1px #292929, inset -2px -2px #ffffff, inset 2px 2px rgb(158, 158, 158);
+}
+
+* {
     font-size: 1.5rem;
-  }
+}
+
+.blink-txt {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

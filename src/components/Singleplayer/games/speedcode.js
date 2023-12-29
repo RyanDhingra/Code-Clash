@@ -30,8 +30,7 @@ function Speedcode({ user }) {
             codeConsole.current.scrollTop = codeConsole.current.scrollHeight;
         }
     }, [consoleText])
-    console.log("User")
-    console.log(user)
+    
     useEffect(() => {
         if (problem.length !== 0) {
             const funcName = "def " + problem[5] + ":";

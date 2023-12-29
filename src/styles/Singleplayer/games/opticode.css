@@ -1,0 +1,206 @@
+.opticode-cont {
+    height: 100vh;
+    width: 100%;
+    color: white;
+    background-color: black;
+}
+
+.opticode-header {
+    height: 10vh;
+    display: flex;
+}
+
+.opticode-timer-cont {
+    width: 50%;
+    height: 10vh;
+}
+
+.opticode-opponent-info-cont {
+    width: 50%;
+    height: 10vh;
+    display: flex;
+}   
+
+.opticode-ide-cont {
+    left: 0;
+    top: 10vh;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+}
+
+.opticode-ls {
+    width: 40%;
+    height: 80vh;
+    margin-left: 10%;
+    display: flex;
+    border-width: 3px 1.5px 3px 3px;
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.opticode-line-num {
+    font-size: 16px;
+    margin: 0;
+    height: 16px;
+    text-align: right;
+    width: 80%;
+}
+
+.opticode-line-nums {
+    width: 8%;
+    overflow: hidden;
+    margin-right: 2%;
+    border-right: 3px solid white;
+}
+
+.opticode-line-nums::-webkit-scrollbar {
+    visibility: hidden;
+    width: 0;
+}
+
+.opticode-code-input-cont {
+    width: 90%;
+    height: 100%;
+}
+
+.opticode-code-input {
+    height: 100%;
+    width: 100%;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    border-image-width: 0px;
+    font-size: 16px;
+    font-family: 'Inconsolata';
+    line-height: 16px;
+    text-wrap: nowrap;
+    overflow: scroll;
+    color: white;
+    padding: 0;
+    z-index: 1;
+    background-color: black;
+}
+
+.opticode-code-input::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+    height: 10px;
+}
+
+.opticode-code-input::-webkit-scrollbar-thumb {
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background-clip: content-box;
+}
+
+.opticode-code-input::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.opticode-rs {
+    top: 10vh;
+    width: 40%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: column;
+    border-width: 3px 3px 3px 1.5px;
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
+}
+
+.opticode-problem-cont {
+    width: 100%;
+    height: 60vh;
+    border-bottom: 3px solid white;
+}
+
+.opticode-problem-title {
+    height: 5vh;
+    margin: none;
+}
+
+.opticode-problem {
+    width: 100%;
+    height: 55vh;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: "Inconsolata";
+    background-color: black;
+    border-top: 3px solid white;
+    color: white;
+    white-space: pre-wrap;
+    user-select: none;
+}
+
+.opticode-console-cont {
+    width: 100%;
+    height: 20vh;
+}
+
+.opticode-console {
+    width: 100%;
+    height: 20vh;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: "Inconsolata";
+    background-color: black;
+    color: white;
+}
+
+.opticode-console::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+}
+
+.opticode-console::-webkit-scrollbar-thumb {
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background-clip: content-box;
+}
+
+.opticode-console::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.opticode-console::-webkit-scrollbar-track-piece:end {
+    margin-bottom: 1.5vh;
+}
+
+.opticode-footer {
+    height: 10vh;
+    width: 100%;
+    display: flex;
+}
+
+.opticode-code-actions {
+    margin-left: 10%;
+    width: 40%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.opticode-run-actions {
+    margin-right: 10%;
+    width: 40%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

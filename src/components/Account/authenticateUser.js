@@ -10,18 +10,26 @@ function AuthenticateUser({ setUser }) {
     const [initText, setInitText] = useState("> Initializing");
     const [initTextCounter, setInitTextCounter] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
         nextInput()
     }, [stage])
+
+    const navigateToMainmenu = (e) => {
+        e.preventDefault();
+        if (e.key === "Enter") {
+            navigate('/mainmenu')
+        }
+    }
 
     useEffect(() => {
         window.addEventListener('focus', nextInput);
         window.addEventListener('click', nextInput);
     
         return () => {
-          window.removeEventListener('focus', nextInput);
-          window.removeEventListener('click', nextInput)
+            window.removeEventListener('focus', nextInput);
+            window.removeEventListener('click', nextInput)
         };
       }, []);
 
@@ -213,14 +221,15 @@ function AuthenticateUser({ setUser }) {
                         const newRes = (
                             <>
                                 <h1 style={{color: "#009E00"}}>{"> Credentials: OK"}</h1>
-                                <h1>{"> Welcome " + username + "!"}</h1>
-                                <button onClick={() => navigate('/mainmenu')}>Commence Clashing</button>
+                                <h1 className='blink-txt'>{"> Press ENTER to continue"}</h1>
+                                <input style={{caretColor: 'transparent'}} onKeyDown={navigateToMainmenu}/>
                             </>
                         )
             
                         return [...prevLoginRes, newRes]
                     })
                     setUser(response.data.user)
+                    setLoggedIn(true);
                 } else {
                     alert(response.data)
                     currUsername.current = null;
@@ -395,7 +404,6 @@ function AuthenticateUser({ setUser }) {
     return (
         <div className='login-page'>
             <div className='terminal' ref={terminal}>
-                <h1>Welcome to Code Clash!</h1>
                 <h1 className='init-txt' style={{color: initTextCounter >= 13 ? "#009E00":"white"}}>{initTextCounter >= 13 ? "> Initialization Complete":initText}</h1>
                 <h1 className='auth-txt' style={{visibility: initTextCounter >= 13 ? "visible":"hidden"}}>{"> User Authentication Required:"}</h1>
                 <div className='auth-opt-cont'>

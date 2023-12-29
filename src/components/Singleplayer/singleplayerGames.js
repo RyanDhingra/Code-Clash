@@ -2,15 +2,24 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import "../../styles/Singleplayer/singleplayerGames.css";
 import sp_g1 from "../../assets/videos/SP-G1.mp4";
+import keydown from "../../assets/audios/keydown.mp3";
 
 function SinglePlayerGames({ user }) {
-    const games = ["speedcode","bugblitz","codegolf","Game 4","Game 5","Game 6","Game 7"];
+    const games = ["speedcode","bugblitz","codegolf","opticode","Game 5","Game 6","Game 7"];
     const refs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
     const navigate = useNavigate();
     const [selectedGame, setSelectedGame] = useState(null);
     const [singleplayerActive, setSingleplayerActive] = useState(false);
+    const keySound = useRef(null);
+
+    const playKeySound = () => {
+        keySound.current.pause();
+        keySound.current.currentTime = 0;
+        keySound.current.play();
+    }
 
     const handleMouseEnter = (refNum) => {
+        playKeySound();
         setSelectedGame(refNum)
 
         for (let ref of refs) {
@@ -46,14 +55,19 @@ function SinglePlayerGames({ user }) {
 
             setSelectedGame((prevSelectedGame) => {
                 if (e.key === 'ArrowRight' && prevSelectedGame + 1 < games.length) {
+                    playKeySound();
                     return prevSelectedGame + 1;
                 } else if (e.key === 'ArrowLeft' && prevSelectedGame - 1 >= 0) {
+                    playKeySound();
                     return prevSelectedGame - 1;
                 } else if (e.key === 'ArrowUp' && prevSelectedGame - 3 >= 0) {
+                    playKeySound();
                     return prevSelectedGame - 3;
                 } else if (e.key === 'ArrowDown' && prevSelectedGame + 3 < games.length) {
+                    playKeySound();
                     return prevSelectedGame + 3;
                 } else if (e.key === 'Enter' && prevSelectedGame !== null) {
+                    playKeySound();
                     navigate('/singleplayer/' + games[prevSelectedGame]);
                 }
     
@@ -80,6 +94,7 @@ function SinglePlayerGames({ user }) {
     if (singleplayerActive) {
         return (
             <div className={'singleplayer-page'}>
+                <audio ref={keySound} src={keydown} />
                 <div className='singleplayer-header'>
                     <h1 className='singleplayer-title'>Mode Select:</h1>
                 </div>
