@@ -9,6 +9,7 @@ import "./styles/App.css"
 import Speedcode from "./components/Singleplayer/games/speedcode";
 import BugBlitz from "./components/Singleplayer/games/bugblitz";
 import Codegolf from "./components/Singleplayer/games/codegolf";
+import Syntaxsniper from "./components/Singleplayer/games/syntaxsniper";
 
 function App() {
   const [user, setUser] = useState({});
@@ -28,6 +29,7 @@ function App() {
               <Route exact path='/singleplayer/speedcode' element={<Speedcode user={user}/>}/>
               <Route exact path='/singleplayer/bugblitz/' element={<BugBlitz user={user}/>}/>
               <Route exact path='/singleplayer/codegolf/' element={<Codegolf user={user}/>}/>
+              <Route exact path='/singleplayer/syntaxsniper/' element={<Syntaxsniper user={user}/>}/>
             </>
           :
           null}

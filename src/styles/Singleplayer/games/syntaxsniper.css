@@ -1,0 +1,132 @@
+.syntaxsniper-cont {
+    height: 100vh;
+    width: 100%;
+    color: white;
+    background-color: black;
+}
+
+.syntaxsniper-header {
+    height: 10vh;
+    display: flex;
+}
+
+.syntaxsniper-timer-cont {
+    width: 50%;
+    height: 10vh;
+}
+
+.syntaxsniper-opponent-info-cont {
+    width: 125%;
+    height: 10vh;
+    display: flex;
+    
+
+}   
+
+
+.syntaxsniper-ide-cont {
+    left: 0;
+    top: 10vh;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+}
+
+.syntaxsniper-ls {
+    width: 40%;
+    height: 80vh;
+    margin-left: 10%;
+    border-width: 3px 1.5px 3px 3px;
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+
+
+
+.syntaxsniper-rs {
+    top: 10vh;
+    width: 40%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: column;
+    border-width: 3px 3px 3px 1.5px;
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
+}
+
+.syntaxsniper-problem-cont {
+    width: 100%;
+    height: 60vh;
+    border-bottom: 3px solid white;
+}
+
+.syntaxsniper-problem-title {
+    height: 5vh;
+    margin: none;
+}
+
+.syntaxsniper-problem {
+    height: 55vh;
+    width: 100%;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 32px;
+    font-family: "Inconsolata";
+    background-color: black;
+    border-top: 3px solid white;
+    color: white;
+    white-space: pre-wrap;
+    user-select: none;
+}
+
+.syntaxsniper-result {
+    width: 100%;
+    height: 56vh;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: "Inconsolata";
+    background-color: black;
+    border-top: 3px solid white;
+    color: white;
+    white-space: pre-wrap;
+    user-select: none;
+}
+
+.syntaxsniper-footer {
+    height: 10vh;
+    width: 100%;
+    display: flex;
+}
+
+
+.syntaxsniper-options {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.syntaxsniper-options-true {
+    width: 48%;
+    height: 100%;
+    position: relative;
+}
+
+.syntaxsniper-options-false {
+    width: 48%;
+    height: 100%;
+    position: relative;
+}
