@@ -4,7 +4,7 @@ import "../../styles/Singleplayer/singleplayerGames.css";
 import sp_g1 from "../../assets/videos/SP-G1.mp4";
 
 function SinglePlayerGames({ user }) {
-    const games = ["speedcode","bugblitz","codegolf","syntaxsniper","Game 5","Game 6","Game 7"];
+    const games = ["speedcode","bugblitz","codegolf","syntaxsniper","tracetitans","Game 6","Game 7"];
     const refs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
     const navigate = useNavigate();
     const [selectedGame, setSelectedGame] = useState(null);

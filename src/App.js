@@ -10,6 +10,7 @@ import Speedcode from "./components/Singleplayer/games/speedcode";
 import BugBlitz from "./components/Singleplayer/games/bugblitz";
 import Codegolf from "./components/Singleplayer/games/codegolf";
 import Syntaxsniper from "./components/Singleplayer/games/syntaxsniper";
+import Tracetitans from "./components/Singleplayer/games/tracetitans";
 
 function App() {
   const [user, setUser] = useState({});
@@ -30,6 +31,7 @@ function App() {
               <Route exact path='/singleplayer/bugblitz/' element={<BugBlitz user={user}/>}/>
               <Route exact path='/singleplayer/codegolf/' element={<Codegolf user={user}/>}/>
               <Route exact path='/singleplayer/syntaxsniper/' element={<Syntaxsniper user={user}/>}/>
+              <Route exact path='/singleplayer/tracetitans/' element={<Tracetitans user={user}/>}/>
             </>
           :
           null}

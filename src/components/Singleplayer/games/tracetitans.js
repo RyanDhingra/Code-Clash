@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import "../../../styles/Singleplayer/games/syntaxsniper.css";
+import "../../../styles/Singleplayer/games/tracetitans.css";
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router';
 import MatchmakingLoader from '../../Loaders/Matchmaking/matchmaking';
 
-function Syntaxsniper({ user }) {
-    const gameid = 4;
+function Tracetitans({ user }) {
+    const gameid = 5;
 
     const room = useRef(null);
     const matchFound = useRef(false);
@@ -25,8 +25,8 @@ function Syntaxsniper({ user }) {
 
     let score = 0;
     let oppScore = 0;
-    score = scoreCount(answers, problem[1]);
-    oppScore = scoreCount(oppAnswers, problem[1]);
+    score = scoreCount(answers, problem[3]);
+    oppScore = scoreCount(oppAnswers, problem[3]);
 
     
     useEffect(() => {
@@ -63,7 +63,11 @@ function Syntaxsniper({ user }) {
         socket.on('oppAnswerUpdateSent', (data) => {
             setOppAnswers(data.answers);
             console.log(data.answers);
-            console.log(oppAnswers);
+            setTime(timePerQuestion);
+        });
+        
+        socket.on('time_reduce', (data) => {
+            setTime(10);
         });
 
         socket.on('room_created', (data) => {
@@ -121,25 +125,26 @@ function Syntaxsniper({ user }) {
 
     const optionSelect = async (action) => {
         let newAnswers;
-        if (action === 'true') {
-            newAnswers = answers.concat([1]);
-            console.log("true pressed");
-        } else if (action === 'false') {
-            newAnswers = answers.concat([0]);
-            console.log("false pressed");
-        } 
+        newAnswers = answers.concat([action]);
+        console.log(action+" pressed");
         setAnswers(newAnswers);
         console.log(newAnswers);
         currSocket.emit('oppAnswerUpdate', {game_id: gameid, room_id: room.current, answers: newAnswers});
         setTime(timePerQuestion);
         setCurrProblem(currProblem+1);
 
-        console.log(scoreCount(newAnswers,problem[1])+', '+oppScore);
-        if (currProblem+1 === problem[0].length) {
-            if (scoreCount(newAnswers,problem[1]) > oppScore) {
+        console.log("HHHH "+newAnswers.length+", "+oppAnswers.length);
+        if (newAnswers.length > oppAnswers.length){
+            currSocket.emit('time_reduce', { room_id: room.current, game_id: gameid })
+
+        }
+
+        console.log(oppAnswers.length+"==="+newAnswers.length);
+        if (oppAnswers.length === newAnswers.length && currProblem+1 === problem[3].length) {
+            if (scoreCount(newAnswers,problem[3]) > oppScore) {
                 currSocket.emit('game_over', { room_id: room.current, game_id: gameid })
                 alert('You won!')
-            } else if (scoreCount(newAnswers,problem[1]) === oppScore) {
+            } else if (scoreCount(newAnswers,problem[3]) === oppScore) {
                 currSocket.emit('game_over_tie', { room_id: room.current, game_id: gameid })
                 alert("It's a TIE!")
             }
@@ -147,22 +152,23 @@ function Syntaxsniper({ user }) {
         }
     }
 
-    if (time === 0 || oppAnswers.length > currProblem) {
+    if (time === 0) {
         let newAnswers;
-        newAnswers = answers.concat([2]);
+        newAnswers = answers.concat([""]);
         console.log("nothing pressed");
         setAnswers(newAnswers);
         console.log(newAnswers);
         currSocket.emit('oppAnswerUpdate', {game_id: gameid, room_id: room.current, answers: newAnswers});
+
         setTime(timePerQuestion);
         setCurrProblem(currProblem+1);
 
-        console.log(scoreCount(newAnswers,problem[1])+', '+oppScore);
-        if (currProblem+1 === problem[0].length) {
-            if (scoreCount(newAnswers,problem[1]) > oppScore) {
+        console.log(oppAnswers.length+"==="+newAnswers.length);
+        if (oppAnswers.length === newAnswers.length && currProblem+1 === problem[3].length) {
+            if (scoreCount(newAnswers,problem[3]) > oppScore) {
                 currSocket.emit('game_over', { room_id: room.current, game_id: gameid })
                 alert('You won!')
-            } else if (scoreCount(newAnswers,problem[1]) === oppScore) {
+            } else if (scoreCount(newAnswers,problem[3]) === oppScore) {
                 currSocket.emit('game_over_tie', { room_id: room.current, game_id: gameid })
                 alert("It's a TIE!")
             }
@@ -175,8 +181,8 @@ function Syntaxsniper({ user }) {
         let p2 = opponent+' Answers'
         let result = ` ${p1.padEnd(10, ' ')} - ${p2.padStart(10, ' ')}\n\n`;
         for (let i = 0; i < arr2.length; i++) {
-          let val1 = arr1[i] === arr3[i] ? 'Correct' : arr1[i] === 2 ? '': 'Incorrect';
-          let val2 = arr2[i] === arr3[i] ? 'Correct' : arr2[i] === 2 ? '': 'Incorrect';
+          let val1 = arr1[i] === arr3[i] ? 'Correct' : arr1[i] === undefined ? '': 'Incorrect';
+          let val2 = arr2[i] === arr3[i] ? 'Correct' : arr2[i] === undefined ? '': 'Incorrect';
           result += `${i + 1}) ${val1.padEnd(10, ' ')} - ${val2.padStart(10, ' ')}\n`;
         }
         return result;
@@ -192,36 +198,72 @@ function Syntaxsniper({ user }) {
         return count;
     }
 
+
+    function optionGenerate() {
+        if (oppAnswers.length >= answers.length && currProblem < problem[3].length){
+            return (
+                <div>
+                    <div className='tracetitans-result'>
+                        <h2 className='tracetitans-result-title'>{problem[0]+'('+problem[2][currProblem]+')'} </h2>
+                    
+                        <div className='tracetitans-options-12'>
+                            <button className="tracetitans-options-1" onClick={() => optionSelect(problem[4][currProblem][0])}>{problem[4][currProblem][0]}</button>
+                            <button className="tracetitans-options-2" onClick={() => optionSelect(problem[4][currProblem][1])}>{problem[4][currProblem][1]}</button>
+                        </div>
+                        <div className='tracetitans-options-34'>
+                            <button className="tracetitans-options-3" onClick={() => optionSelect(problem[4][currProblem][2])}>{problem[4][currProblem][2]}</button>
+                            <button className="tracetitans-options-4" onClick={() => optionSelect(problem[4][currProblem][3])}>{problem[4][currProblem][3]}</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else{
+            return (
+                <div>
+                    <div className='tracetitans-result'>
+                        <h2 className='tracetitans-result-title'>{problem[0]+'( )'} </h2>
+                        <h2 className='tracetitans-result-title'>Wait for Opponent... </h2>
+                    
+                    </div>
+                </div>
+            );
+        }
+    }
+
+
     
     if (matchFound.current && currSocket !== null) {
         return (
-            <div className='syntaxsniper-cont'>
-                <div className='syntaxsniper-header'>
-                    <div className='syntaxsniper-timer-cont'>
+            <div className='tracetitans-cont'>
+                <div className='tracetitans-header'>
+                    <div className='tracetitans-timer-cont'>
                         <h1>{formatTime(time)}</h1>
                     </div>
-                    <div className='syntaxsniper-opponent-info-cont'>
-                        <h3 className='syntaxsniper-opponent-name'>Opponent: {opponent}&nbsp;&nbsp;</h3>
-                        <p className='syntaxsniper-score'>Your Score: {score}/{problem[0].length}</p>
+                    <div className='tracetitans-opponent-info-cont'>
+                        <h3 className='tracetitans-opponent-name'>Opponent: {opponent}&nbsp;&nbsp;</h3>
+                        <p className='tracetitans-score'>Your Score: {score}/{problem[2].length}</p>
                     </div>
                 </div>
-                <div className='syntaxsniper-ide-cont'>
-                    <div className='syntaxsniper-ls'>
-                        <h1>Syntax #{currProblem +1}</h1>
-                        <textarea readOnly value={problem[0][currProblem]} className='syntaxsniper-problem'></textarea>
-                        <div className='syntaxsniper-options'>
-                            <button className="syntaxsniper-options-true" onClick={() => optionSelect("true")}>True</button>
-                            <button className="syntaxsniper-options-false" onClick={() => optionSelect("false")}>False</button>
+                <div className='tracetitans-ide-cont'>
+                    <div className='tracetitans-ls'>
+                        <h1>{problem[0]}</h1>
+                        <textarea readOnly value={problem[1]} className='tracetitans-problem'></textarea>
+                    </div>
+                    
+                    <div className='tracetitans-rs'>
+                        <div className='tracetitans-problem-cont'>
+                            <h1 className='tracetitans-problem-title'>Answers</h1>
+                            {optionGenerate()}
+                        </div>
+                        <div>
+                            <textarea readOnly value={formatArrays(answers,oppAnswers,problem[3])} className='tracetitans-problem'></textarea>
                         </div>
                     </div>
-                    <div className='syntaxsniper-rs'>
-                        <div className='syntaxsniper-problem-cont'>
-                            <h1 className='syntaxsniper-problem-title'>Answers</h1>
-                            <textarea readOnly value={formatArrays(answers, oppAnswers, problem[1])} className='syntaxsniper-result'></textarea>
-                        </div>
-                    </div>
+                    
                 </div>
-                <div className='syntaxsniper-footer'>
+                <div className='tracetitans-footer'>
+                    <div className='tracetitans-options'>
+                    </div>
                 </div>
             </div>
         );
@@ -232,4 +274,4 @@ function Syntaxsniper({ user }) {
     }
 }
 
-export default Syntaxsniper;
+export default Tracetitans;

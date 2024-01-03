@@ -1,0 +1,166 @@
+.tracetitans-cont {
+    height: 100vh;
+    width: 100%;
+    color: white;
+    background-color: black;
+}
+
+.tracetitans-header {
+    height: 10vh;
+    display: flex;
+}
+
+.tracetitans-timer-cont {
+    width: 50%;
+    height: 10vh;
+}
+
+.tracetitans-opponent-info-cont {
+    width: 125%;
+    height: 10vh;
+    display: flex;
+    
+
+}   
+
+.tracetitans-problem-title {
+    border-bottom: 3px solid white;
+    color: white;
+}
+
+
+.tracetitans-ide-cont {
+    left: 0;
+    top: 10vh;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+}
+
+.tracetitans-ls {
+    width: 40%;
+    height: 80vh;
+    margin-left: 10%;
+    border-width: 3px 1.5px 3px 3px;
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+
+
+
+.tracetitans-rs {
+    top: 10vh;
+    width: 40%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: column;
+    border-width: 3px 3px 3px 1.5px;
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
+}
+
+.tracetitans-problem-cont {
+    width: 100%;
+    height: 40vh;
+    border-bottom: 3px solid white;
+}
+
+.tracetitans-problem {
+    height: 55vh;
+    width: 100%;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 32px;
+    font-family: "Inconsolata";
+    background-color: black;
+    border-top: 3px solid white;
+    color: white;
+    white-space: pre-wrap;
+    user-select: none;
+}
+
+.tracetitans-result {
+    width: 100%;
+    height: 54vh;
+    resize: none;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 40px;
+    font-family: "Inconsolata";
+    background-color: black;
+    color: white;
+    white-space: pre-wrap;
+    user-select: none;
+    text-align: center;
+}
+
+.tracetitans-footer {
+    height: 10vh;
+    width: 100%;
+    display: flex;
+}
+
+
+.tracetitans-options {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tracetitans-options-test {
+    width: 20%;
+    height: 50%;
+    position: flex;
+}
+
+.tracetitans-options-submit {
+    width: 20%;
+    height: 50%;
+    position: flex;
+}
+
+.tracetitans-options-1 {
+    width: 40%;
+    height: 100%;
+
+}
+.tracetitans-options-2 {
+    width: 40%;
+    height: 100%;
+}
+
+.tracetitans-options-3 {
+    width: 40%;
+    height: 100%;
+
+}
+.tracetitans-options-4 {
+    width: 40%;
+    height: 100%;
+}
+
+.tracetitans-options-12{
+    width: 100%;
+    height: 20%;
+}
+
+.tracetitans-options-34{
+    width: 100%;
+    height: 20%;
+}
+
+.tracetitans-result-title {
+    margin: 2%;
+}
