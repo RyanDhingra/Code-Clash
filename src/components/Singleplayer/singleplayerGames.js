@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import "../../styles/Singleplayer/singleplayerGames.css";
 import sp_g1 from "../../assets/videos/SP-G1.mp4";
+import sp_g2 from "../../assets/videos/SP-G2.mp4";
+import sp_g3 from "../../assets/videos/SP-G3.mp4";
+import sp_g4 from "../../assets/videos/SP-G4.mp4";
 import keydown from "../../assets/audios/keydown.mp3";
 
 function SinglePlayerGames({ user }) {
-    const games = ["speedcode","bugblitz","codegolf","opticode","Game 5","Game 6","Game 7"];
-    const refs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
+    const games = ["speedcode","bugblitz","codegolf","opticode"];
+    const tutorials = [sp_g1, sp_g2, sp_g3, sp_g4];
+    const refs = [useRef(null), useRef(null), useRef(null), useRef(null)];
     const navigate = useNavigate();
     const [selectedGame, setSelectedGame] = useState(null);
     const [singleplayerActive, setSingleplayerActive] = useState(false);
@@ -102,7 +106,7 @@ function SinglePlayerGames({ user }) {
                     {games.map((game, index) => (
                         <div onClick={() => navigate('/singleplayer/' + games[index])} key={index} className='solo-game'>
                             <video ref={refs[index]} className={selectedGame === index ? 'solo-game-video selected':'solo-game-video'} loop onMouseMove={null} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={() => handleMouseLeave()}>
-                                <source src={sp_g1} type='video/mp4'/>
+                                <source src={tutorials[index]} type='video/mp4'/>
                             </video>
                         </div>
                     ))}

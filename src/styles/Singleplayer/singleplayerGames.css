@@ -45,3 +45,8 @@
 .solo-game-video.selected {
     border: 3px solid white;
 }
+
+iframe
+{
+    display: none;
+}
