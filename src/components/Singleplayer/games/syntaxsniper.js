@@ -4,6 +4,10 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router';
 import MatchmakingLoader from '../../Loaders/Matchmaking/matchmaking';
+import leftArrow from '../../../assets/images/leftArrow.png';
+import rightArrow from '../../../assets/images/rightArrow.png';
+import checkMark from '../../../assets/images/checkMark.png';
+
 
 function Syntaxsniper({ user }) {
     const gameid = 4;
@@ -16,7 +20,9 @@ function Syntaxsniper({ user }) {
     const [currSocket, setCurrSocket] = useState(null);
     const [problem, setProblem] = useState([]);
     const [opponent, setOpponent] = useState('');
+    const [player, setPlayer] = useState('');
     const [loading, setLoading] = useState(true);
+    const [arrowActive, setArrowActive] = useState(1);
 
     const [answers, setAnswers] = useState([]);
     const [oppAnswers, setOppAnswers] = useState([]);
@@ -28,7 +34,27 @@ function Syntaxsniper({ user }) {
     score = scoreCount(answers, problem[1]);
     oppScore = scoreCount(oppAnswers, problem[1]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            event.preventDefault();
+            console.log('Keydown event fired', event.key);
+            console.log('Arrow active', arrowActive);
+            if (event.key === 'ArrowLeft') {
+                document.getElementsByClassName("syntaxsniper-options-true")[0].click();
+                
+            } else if (event.key === 'ArrowRight') {
+                document.getElementsByClassName("syntaxsniper-options-false")[0].click();
+
+            }
+        };
     
+        document.addEventListener('keydown', handleKeyDown);
+    
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [arrowActive]); 
+
     useEffect(() => {
         // Connect to the Socket.IO server
         const socket = io('http://192.168.2.130:5000');
@@ -60,7 +86,7 @@ function Syntaxsniper({ user }) {
         });
 
 
-        socket.on('oppAnswerUpdateSent', (data) => {
+        socket.on('update_cases', (data) => {
             setOppAnswers(data.answers);
             console.log(data.answers);
             console.log(oppAnswers);
@@ -78,6 +104,7 @@ function Syntaxsniper({ user }) {
             matchFound.current = true;
             setProblem(data.problem);
             setOpponent(data.opponent);
+            setPlayer(data.player);
         });
     
         socket.emit('queue', { player_id: user.id, game_id: gameid, user: user.username });
@@ -130,7 +157,7 @@ function Syntaxsniper({ user }) {
         } 
         setAnswers(newAnswers);
         console.log(newAnswers);
-        currSocket.emit('oppAnswerUpdate', {game_id: gameid, room_id: room.current, answers: newAnswers});
+        currSocket.emit('update_cases', {game_id: gameid, room_id: room.current, cases: newAnswers});
         setTime(timePerQuestion);
         setCurrProblem(currProblem+1);
 
@@ -153,7 +180,7 @@ function Syntaxsniper({ user }) {
         console.log("nothing pressed");
         setAnswers(newAnswers);
         console.log(newAnswers);
-        currSocket.emit('oppAnswerUpdate', {game_id: gameid, room_id: room.current, answers: newAnswers});
+        currSocket.emit('update_cases', {game_id: gameid, room_id: room.current, cases: newAnswers});
         setTime(timePerQuestion);
         setCurrProblem(currProblem+1);
 
@@ -170,17 +197,6 @@ function Syntaxsniper({ user }) {
         }
     }
 
-    function formatArrays(arr1, arr2, arr3) {
-        let p1 = 'Your Answers';
-        let p2 = opponent+' Answers'
-        let result = ` ${p1.padEnd(10, ' ')} - ${p2.padStart(10, ' ')}\n\n`;
-        for (let i = 0; i < arr2.length; i++) {
-          let val1 = arr1[i] === arr3[i] ? 'Correct' : arr1[i] === 2 ? '': 'Incorrect';
-          let val2 = arr2[i] === arr3[i] ? 'Correct' : arr2[i] === 2 ? '': 'Incorrect';
-          result += `${i + 1}) ${val1.padEnd(10, ' ')} - ${val2.padStart(10, ' ')}\n`;
-        }
-        return result;
-      }
 
     function scoreCount(arr1, arr2) {
         let count = 0;
@@ -197,28 +213,50 @@ function Syntaxsniper({ user }) {
         return (
             <div className='syntaxsniper-cont'>
                 <div className='syntaxsniper-header'>
+                    <div className='syntaxsniper-player-info-cont'>
+                        <div className='syntaxsniper-player-name-cont'>
+                            <div className='syntaxsniper-player-name'>&nbsp;{player}&nbsp;</div>
+                        </div>
+                        <div className='syntaxsniper-pscore-cont'>
+                            <figure>
+                                <figcaption className='syntaxsniper-pscore-caption'><div className='syntaxsniper-pscore'>&nbsp;{score}</div></figcaption>
+                                <img src={checkMark} alt="Correct" border="0" />
+                            </figure>   
+                        </div>
+                    </div>
                     <div className='syntaxsniper-timer-cont'>
-                        <h1>{formatTime(time)}</h1>
+                        <h1 className='syntaxsniper-time'>{formatTime(time)}</h1>
                     </div>
                     <div className='syntaxsniper-opponent-info-cont'>
-                        <h3 className='syntaxsniper-opponent-name'>Opponent: {opponent}&nbsp;&nbsp;</h3>
-                        <p className='syntaxsniper-score'>Your Score: {score}/{problem[0].length}</p>
+                        <div className='syntaxsniper-opponent-name-cont'>
+                            <div className='syntaxsniper-opponent-name'>Opponent: {opponent}&nbsp;</div>
+                        </div>
+                        <div className='syntaxsniper-oppscore-cont'>
+                            <figure>
+                                <figcaption className='syntaxsniper-oppscore-caption'><div className='syntaxsniper-oppscore'>{oppScore}&nbsp;</div></figcaption>
+                                <img src={checkMark} alt="Correct" border="0" />
+                            </figure>
+                            
+                        </div>
                     </div>
                 </div>
-                <div className='syntaxsniper-ide-cont'>
-                    <div className='syntaxsniper-ls'>
-                        <h1>Syntax #{currProblem +1}</h1>
-                        <textarea readOnly value={problem[0][currProblem]} className='syntaxsniper-problem'></textarea>
-                        <div className='syntaxsniper-options'>
-                            <button className="syntaxsniper-options-true" onClick={() => optionSelect("true")}>True</button>
-                            <button className="syntaxsniper-options-false" onClick={() => optionSelect("false")}>False</button>
-                        </div>
-                    </div>
-                    <div className='syntaxsniper-rs'>
-                        <div className='syntaxsniper-problem-cont'>
-                            <h1 className='syntaxsniper-problem-title'>Answers</h1>
-                            <textarea readOnly value={formatArrays(answers, oppAnswers, problem[1])} className='syntaxsniper-result'></textarea>
-                        </div>
+                <div className='syntaxsniper-ls'>
+                    <h1>Syntax #{currProblem +1}</h1>
+                    <textarea readOnly value={problem[0][currProblem]} className='syntaxsniper-problem'></textarea>
+                    <h1>Correct or Incorrect Syntax?</h1>
+                    <div className='syntaxsniper-options'>
+                        <button className="syntaxsniper-options-true" onClick={() => optionSelect("true")}>
+                            <figure className="syntaxsniper-options-true-fig" >
+                                <img src={leftArrow} alt="Correct" border="0" />
+                                <figcaption>Correct</figcaption>
+                            </figure>
+                        </button>
+                        <button className="syntaxsniper-options-false" onClick={() => optionSelect("false")}>
+                            <figure className="syntaxsniper-options-false-fig" >
+                                <img src={rightArrow} alt="Incorrect" border="0" />
+                                <figcaption>Incorrect</figcaption>
+                            </figure>
+                        </button>
                     </div>
                 </div>
                 <div className='syntaxsniper-footer'>

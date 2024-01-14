@@ -7,78 +7,95 @@
 
 .tracetitans-header {
     height: 10vh;
+    width: 100%;
     display: flex;
+    
 }
 
 .tracetitans-timer-cont {
-    width: 50%;
+    width: 20%;
     height: 10vh;
+}
+
+.tracetitans-time {
+    text-align: center;
+    font-size: 80px;
 }
 
 .tracetitans-opponent-info-cont {
-    width: 125%;
-    height: 10vh;
-    display: flex;
-    
+    float: right;
+    width: 40%;
+    height: 20vh;
+    display: table;
+    margin-left: auto; 
+    margin-right: 0;
+    margin-top: 2%;
 
-}   
+}  
 
-.tracetitans-problem-title {
-    border-bottom: 3px solid white;
-    color: white;
+.tracetitans-player-info-cont {
+    float: left;
+    width: 40%;
+    height: 20vh;
+    display: table;
+    margin-right: auto; 
+    margin-left: 0;
+    margin-top: 2%;
 }
 
-
-.tracetitans-ide-cont {
-    left: 0;
-    top: 10vh;
-    width: 100%;
-    height: 80vh;
+.tracetitans-oppscore,  .tracetitans-pscore {
+    padding: 11.2px 0;
+}
+.tracetitans-opponent-name, .tracetitans-player-name {
+    height: 20%;
+    font-size: 35px;
+}
+.tracetitans-player-name-cont, .tracetitans-pscore-cont {
     display: flex;
+    justify-content: flex-start;
+    
+}
+
+.tracetitans-opponent-name-cont, .tracetitans-oppscore-cont {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tracetitans-oppscore-caption {
+    float: left;
+}
+.tracetitans-pscore-caption {
+    float: right;
 }
 
 .tracetitans-ls {
-    width: 40%;
-    height: 80vh;
-    margin-left: 10%;
-    border-width: 3px 1.5px 3px 3px;
-    border-color: white;
-    border-style: solid;
-    box-sizing: border-box;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    position: relative;
+    align-self: center;
+    top: 5%;
+    width: 50%;
+    height: auto;
+    margin-left: 25%;
+    margin-right: 25%;
+    text-align:center;
 }
 
-
-
-
-.tracetitans-rs {
-    top: 10vh;
-    width: 40%;
-    margin-right: 10%;
-    display: flex;
-    flex-direction: column;
-    border-width: 3px 3px 3px 1.5px;
-    border-color: white;
-    border-style: solid;
-    box-sizing: border-box;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    overflow: hidden;
-}
 
 .tracetitans-problem-cont {
     width: 100%;
-    height: 40vh;
+    height: 60vh;
     border-bottom: 3px solid white;
 }
 
+.tracetitans-problem-title {
+    height: 5vh;
+    margin: none;
+}
+
 .tracetitans-problem {
-    height: 55vh;
+    height: 40vh;
     width: 100%;
     resize: none;
     outline: none;
-    border: none;
     box-sizing: border-box;
     font-size: 32px;
     font-family: "Inconsolata";
@@ -87,22 +104,36 @@
     color: white;
     white-space: pre-wrap;
     user-select: none;
+    border-width: 3px 3px 3px 3px;
+    border-color: white;
+    border-style: solid;
+    text-align:center;
 }
 
 .tracetitans-result {
-    width: 100%;
-    height: 54vh;
-    resize: none;
-    outline: none;
-    border: none;
-    box-sizing: border-box;
-    font-size: 40px;
+    width: 400%;
+    height: 130%;
+    font-size: 32px;
     font-family: "Inconsolata";
     background-color: black;
     color: white;
     white-space: pre-wrap;
     user-select: none;
-    text-align: center;
+    position: relative;
+    right: 140%
+}
+
+.tracetitans-result2 {
+    width: 200%;
+    height: 130%;
+    font-size: 32px;
+    font-family: "Inconsolata";
+    background-color: black;
+    color: white;
+    white-space: pre-wrap;
+    user-select: none;
+    position: relative;
+    right: 46%
 }
 
 .tracetitans-footer {
@@ -113,54 +144,32 @@
 
 
 .tracetitans-options {
-    height: 100%;
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
-.tracetitans-options-test {
-    width: 20%;
-    height: 50%;
-    position: flex;
+figcaption {
+    color: white;
 }
 
-.tracetitans-options-submit {
-    width: 20%;
-    height: 50%;
-    position: flex;
-}
-
-.tracetitans-options-1 {
+.tracetitans-options-1, .tracetitans-options-2, .tracetitans-options-3, .tracetitans-options-4 {
     width: 40%;
     height: 100%;
-
-}
-.tracetitans-options-2 {
-    width: 40%;
-    height: 100%;
+    font-size: 32px;
 }
 
-.tracetitans-options-3 {
-    width: 40%;
-    height: 100%;
-
-}
-.tracetitans-options-4 {
-    width: 40%;
-    height: 100%;
-}
-
-.tracetitans-options-12{
+.tracetitans-options-12, .tracetitans-options-34{
     width: 100%;
-    height: 20%;
-}
-
-.tracetitans-options-34{
-    width: 100%;
-    height: 20%;
+    height: 50%;
 }
 
 .tracetitans-result-title {
-    margin: 2%;
+    margin: 0.5%;
+    padding: 0%;
+}
+
+.tracetitans-problem-text {
+    font-size: 30px;
 }
